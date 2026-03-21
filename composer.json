@@ -1,0 +1,8 @@
+{
+  "name": "dilki/toko-prototype",
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  }
+}
