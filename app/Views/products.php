@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
+<?php require 'layouts/header.php'; ?>
 
-<head>
-    <title>Products</title>
-</head>
+<h1>Selamat datang di Product</h1>
 
-<body>
-    <h1>Daftar Produk</h1>
-</body>
-
-</html>
+<?php require 'layouts/footer.php'; ?>
