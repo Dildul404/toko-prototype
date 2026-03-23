@@ -6,8 +6,8 @@
 <body>
 
 <nav>
-    <a href="/">Home</a> |
-    <a href="/products">Products</a>
+    <a href="/toko-prototype/public/">Home</a> |
+    <a href="/toko-prototype/public/products">Products</a>
 </nav>
 
 <hr>
