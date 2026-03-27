@@ -58,4 +58,9 @@ class Router
         http_response_code(404);
         echo "404 Not Found";
     }
+
+    public function post($uri, $action)
+    {
+        $this->routes['POST'][$uri] = $action;
+    }
 }
