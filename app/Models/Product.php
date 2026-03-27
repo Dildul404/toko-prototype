@@ -15,4 +15,15 @@ class Product
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function find($id)
+    {
+        $db = Database::connect();
+
+        $stmt = $db->prepare("SELECT * FROM products WHERE id = ?");
+        $stmt->execute([$id]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
 }

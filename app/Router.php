@@ -24,16 +24,35 @@ class Router
             $uri = '/';
         }
 
-        if (isset($this->routes[$method][$uri])) {
-            $action = $this->routes[$method][$uri];
+        // if (isset($this->routes[$method][$uri])) {
+        //     $action = $this->routes[$method][$uri];
 
-            list($controller, $method) = explode('@', $action);
+        //     list($controller, $method) = explode('@', $action);
 
-            $controller = "App\\Controllers\\$controller";
+        //     $controller = "App\\Controllers\\$controller";
 
-            $controllerInstance = new $controller();
+        //     $controllerInstance = new $controller();
 
-            return $controllerInstance->$method();
+        //     return $controllerInstance->$method();
+        // }
+
+        foreach ($this->routes[$method] as $route => $action) {
+
+            // ubah /products/{id} jadi regex
+            $pattern = preg_replace('#\{[\w]+\}#', '([\w-]+)', $route);
+            $pattern = "#^$pattern$#";
+
+            if (preg_match($pattern, $uri, $matches)) {
+
+                array_shift($matches); // hapus full match
+
+                list($controller, $methodAction) = explode('@', $action);
+
+                $controller = "App\\Controllers\\$controller";
+                $controllerInstance = new $controller();
+
+                return $controllerInstance->$methodAction(...$matches);
+            }
         }
 
         http_response_code(404);

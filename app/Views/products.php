@@ -5,7 +5,10 @@
 <ul>
     <?php foreach ($products as $product): ?>
         <li>
-            <?= $product['name'] ?> - Rp<?= number_format($product['price']) ?>
+            <a href="/toko-prototype/public/products/<?= $product['id'] ?>">
+                <?= $product['name'] ?>
+            </a>
+            - Rp<?= number_format($product['price']) ?>
         </li>
     <?php endforeach; ?>
 </ul>

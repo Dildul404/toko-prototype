@@ -14,4 +14,19 @@ class ProductController
 
         return view('products', ['products' => $products]);
     }
+
+    public function show($id)
+    {
+        $productModel = new \App\Models\Product();
+
+        $product = $productModel->find($id);
+
+        if (!$product) {
+            echo "Produk tidak ditemukan";
+            return;
+        }
+
+        return view('product-detail', ['product' => $product]);
+    }
+
 }
