@@ -12,6 +12,6 @@ $router->post('/login', 'AuthController@login');
 $router->get('/register', 'AuthController@showRegister');
 $router->post('/register', 'AuthController@register');
 $router->get('/logout', 'AuthController@logout');
-$router->get('/dashboard', 'DashboardController@index');
+$router->get('/dashboard', 'DashboardController@index', 'AuthMiddleware');
 
 return $router;

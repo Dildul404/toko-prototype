@@ -6,9 +6,20 @@ class Router
 {
     private $routes = [];
 
-    public function get($uri, $action)
+    public function get($uri, $action, $middleware = null)
     {
-        $this->routes['GET'][$uri] = $action;
+        $this->routes['GET'][$uri] = [
+            'action' => $action,
+            'middleware' => $middleware
+        ];
+    }
+
+    public function post($uri, $action, $middleware = null)
+    {
+        $this->routes['POST'][$uri] = [
+            'action' => $action,
+            'middleware' => $middleware
+        ];
     }
 
     public function dispatch($method, $uri)
@@ -38,6 +49,11 @@ class Router
 
         foreach ($this->routes[$method] as $route => $action) {
 
+            $routeData = $this->routes[$method][$route];
+
+            $action = $routeData['action'];
+            $middleware = $routeData['middleware'];
+
             // ubah /products/{id} jadi regex
             $pattern = preg_replace('#\{[\w]+\}#', '([\w-]+)', $route);
             $pattern = "#^$pattern$#";
@@ -51,16 +67,17 @@ class Router
                 $controller = "App\\Controllers\\$controller";
                 $controllerInstance = new $controller();
 
+                // jalankan middleware dulu
+                if ($middleware) {
+                    $middlewareClass = "App\\Middleware\\$middleware";
+                    (new $middlewareClass())->handle();
+                }
+
                 return $controllerInstance->$methodAction(...$matches);
             }
         }
 
         http_response_code(404);
         echo "404 Not Found";
-    }
-
-    public function post($uri, $action)
-    {
-        $this->routes['POST'][$uri] = $action;
     }
 }
