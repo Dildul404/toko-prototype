@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Helpers\Validator;
+use App\Services\AuthService;
 
 class AuthController
 {
@@ -18,9 +20,9 @@ class AuthController
 
     public function register()
     {
-        $userModel = new User();
+        $authService = new AuthService();
 
-        $userModel->create($_POST);
+        $authService->register($_POST);
 
         header('Location: /toko-prototype/public/login');
         exit;
@@ -30,17 +32,20 @@ class AuthController
     {
         session_start();
 
-        $userModel = new User();
-        $user = $userModel->findByEmail($_POST['email']);
+        $authService = new AuthService();
 
-        if ($user && password_verify($_POST['password'], $user['password'])) {
-            $_SESSION['user'] = $user;
+        $success = $authService->login(
+            $_POST['email'],
+            $_POST['password']
+        );
 
-            header('Location: /toko-prototype/public/dashboard');
-            exit;
+        if (!$success) {
+            echo "Login gagal";
+            return;
         }
 
-        echo "Login gagal";
+        header('Location: /toko-prototype/public/dashboard');
+        exit;
     }
 
     public function logout()
